@@ -89,7 +89,7 @@ public class ImageControllerTest {
         Mockito.when(imageService.getImage(Mockito.anyInt())).thenReturn(image);
 
         this.mockMvc.perform(get("/images/1/new").session(session))
-                .andExpect(view().name("images/image"))
+                .andExpect(view().name("images/))
                 .andExpect(content().string(containsString("Welcome User. This is the image")));
 
     }
