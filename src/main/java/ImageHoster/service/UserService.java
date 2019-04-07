@@ -32,4 +32,8 @@ public class UserService {
         }
     }
 
+    public boolean passwordPolicyConformed() {
+
+    }
+
 }
