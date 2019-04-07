@@ -15,13 +15,13 @@
             <property name="javax.persistence.jdbc.user" value="postgres"/>
             <property name="javax.persistence.jdbc.password" value="master"/>
 
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
 
             <property name="hibernate.hbm2ddl.auto" value="update"/> <!-- update -->
             <property name="hibernate.show_sql" value="true"/> <!-- Show SQL in console -->
             <property name="hibernate.format_sql" value="true"/> <!-- Show SQL formatted -->
-
+            <property name="hibernate.connection.release_mode" value="after_transaction"/>
 
         </properties>
 
