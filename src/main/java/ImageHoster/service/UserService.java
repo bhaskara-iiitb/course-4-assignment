@@ -4,6 +4,9 @@ import ImageHoster.model.User;
 import ImageHoster.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
@@ -17,7 +20,7 @@ public class UserService {
         userRepository.registerUser(newUser);
     }
 
-    private String PASSWORD_VALIDATION_REGEX = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W)[a-zA-Z0-9\\S]{3,}$";
+    public final static String PASSWORD_VALIDATION_REGEX = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W)[a-zA-Z0-9\\S]{3,}$";
     //Since we did not have any user in the database, therefore the user with username 'upgrad' and password 'password' was hard-coded
     //This method returned true if the username was 'upgrad' and password is 'password'
     //But now let us change the implementation of this method
@@ -33,10 +36,13 @@ public class UserService {
             return null;
         }
     }
-
+/*
     public boolean passwordPolicyConformed(String password) {
-        boolean matches = Pattern.matches(PASSWORD_VALIDATION_REGEX, password);
-        return matches;
+        AtomicBoolean matches = new AtomicBoolean(false);
+        Pattern p = Pattern.compile(PASSWORD_VALIDATION_REGEX);
+        Matcher m = p.matcher(password);
+        matches.set(m.matches());
+        return matches.get();
     }
-
+*/
 }

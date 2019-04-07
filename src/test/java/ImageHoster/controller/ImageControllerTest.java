@@ -1,4 +1,4 @@
-/*
+
 package ImageHoster.controller;
 
 import ImageHoster.model.Image;
@@ -89,7 +89,7 @@ public class ImageControllerTest {
         Mockito.when(imageService.getImage(Mockito.anyInt())).thenReturn(image);
 
         this.mockMvc.perform(get("/images/1/new").session(session))
-                .andExpect(view().name("images/))
+                .andExpect(view().name("images/image"))
                 .andExpect(content().string(containsString("Welcome User. This is the image")));
 
     }
@@ -310,4 +310,4 @@ public class ImageControllerTest {
     }
 }
 
-*/
+

@@ -105,17 +105,20 @@ public class ImageController {
         model.addAttribute("image", image);
 
         User user = (User) session.getAttribute("loggeduser");
-        if(! image.getUser().getId().equals(user.getId())) {
-            model.addAttribute("editError", editError);
-            model.addAttribute("tags", image.getTags());
-            model.addAttribute("comments", image.getComments());
-            return "images/image";
+        if(image!=null && user!=null &&
+                image.getUser()!=null &&
+                image.getUser().getId() !=null  &&
+                 (image.getUser().getId().equals(user.getId()))) {
+            String tags = convertTagsToString(image.getTags());
+            model.addAttribute("tags", tags);
+
+            return "images/edit";
+    } else {
+      model.addAttribute("editError", editError);
+      model.addAttribute("tags", image.getTags());
+      model.addAttribute("comments", image.getComments());
+      return "images/image";
         }
-
-        String tags = convertTagsToString(image.getTags());
-        model.addAttribute("tags", tags);
-
-        return "images/edit";
     }
 
     //This controller method is called when the request pattern is of type 'images/edit' and also the incoming request is of PUT type
@@ -161,16 +164,19 @@ public class ImageController {
         Image image = imageService.getImage(imageId);
 
         User user = (User) session.getAttribute("loggeduser");
-        if(! image.getUser().getId().equals(user.getId())) {
+        if(image!=null &&
+                image.getUser()!=null &&
+                    image.getUser().getId()!=null &&
+                        image.getUser().getId().equals(user.getId())) {
+            imageService.deleteImage(imageId);
+            return "redirect:/images";
+        }
+        else {
             model.addAttribute("deleteError", deleteError);
             model.addAttribute("image", image);
             model.addAttribute("tags", image.getTags());
             model.addAttribute("comments", image.getComments());
             return "images/image";
-        }
-        else {
-            imageService.deleteImage(imageId);
-            return "redirect:/images";
         }
     }
 
@@ -206,14 +212,14 @@ public class ImageController {
     //Returns the string
     private String convertTagsToString(List<Tag> tags) {
         StringBuilder tagString = new StringBuilder();
-
-        for (int i = 0; i <= tags.size() - 2; i++) {
+        if (tags != null && tags.size()>0) {
+          for (int i = 0; tags.size()>1 && i <= tags.size() - 2; i++) {
             tagString.append(tags.get(i).getName()).append(",");
+          }
+
+          Tag lastTag = tags.get(tags.size() - 1);
+          tagString.append(lastTag.getName());
         }
-
-        Tag lastTag = tags.get(tags.size() - 1);
-        tagString.append(lastTag.getName());
-
         return tagString.toString();
     }
 }
