@@ -8,6 +8,7 @@ import ImageHoster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -40,9 +41,18 @@ public class UserController {
     //This controller method is called when the request pattern is of type 'users/registration' and also the incoming request is of POST type
     //This method calls the business logic and after the user record is persisted in the database, directs to login page
     @RequestMapping(value = "users/registration", method = RequestMethod.POST)
-    public String registerUser(User user) {
-        userService.registerUser(user);
-        return "redirect:/users/login";
+    public String registerUser(@ModelAttribute("User")  User user, Model model) {
+        if(userService.passwordPolicyConformed(user.getPassword())) {
+            userService.registerUser(user);
+            return "redirect:/users/login";
+        }
+        else {
+            String error = "Password must contain at least 1 alphabet, 1 number & 1 special character";
+            //model.addAttribute("User", user);
+            model.addAttribute("passwordTypeError", error);
+            return "users/registration";
+        }
+
     }
 
     //This controller method is called when the request pattern is of type 'users/login'
